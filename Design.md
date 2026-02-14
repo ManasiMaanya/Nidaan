@@ -227,18 +227,15 @@
 }
 ```
 
-## Security Design
-
-### Encryption
-**Data at Rest:**
-- Algorithm: AES-256-GCM
-- Key Derivation: PBKDF2 (100,000 iterations)
-- Patient-specific encryption keys
-- Random salt per patient
-
-**Data in Transit:**
-- TLS 1.3 only
-- Certificate pinning in production
+### IndexedDB Schema
+```
+Stores:
+- patients (keyPath: id)
+- medical_records (keyPath: id, indexes: [patientId, date, type])
+- critical_health_data (keyPath: patientId)
+- access_tokens (keyPath: tokenId, indexes: [expiresAt, mode])
+- audit_log (keyPath: id, indexes: [patientId, startTime])
+```
 
 ### Access Control Flow
 
@@ -334,25 +331,6 @@ Medical Report (PDF/Image)
 2. Emergency View - Critical data only
 3. Consultation View - Full medical history
 4. Print Summary - Formatted PDF generation
-
-
-### IndexedDB Schema
-```
-Stores:
-- patients (keyPath: id)
-- medical_records (keyPath: id, indexes: [patientId, date, type])
-- critical_health_data (keyPath: patientId)
-- access_tokens (keyPath: tokenId, indexes: [expiresAt, mode])
-- audit_log (keyPath: id, indexes: [patientId, startTime])
-```
-
-### Sync Strategy
-```
-- Background sync when network available
-- Conflict resolution: last-write-wins
-- Encrypted uploads only
-- Incremental sync for large files
-```
 
 ## Future Scope
 
