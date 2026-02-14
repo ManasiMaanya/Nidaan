@@ -60,6 +60,33 @@ Patient PWA (Offline-First)
          ↓
    Audit Logging
 ```
+## User Roles
+
+### Patient
+- Upload and manage medical records
+- Generate QR codes for sharing
+- View simplified diagnoses
+- Control access permissions
+- Review audit logs
+- Manage guardian access
+
+### Doctor
+- Scan patient QR codes
+- View patient records (emergency or full)
+- Add diagnoses and prescriptions
+- Print medical summaries
+- No permanent data storage
+
+### Guardian
+- Request access to patient records
+- Manage child profiles
+- View dependent health information
+- Subject to patient approval
+
+### System Admin
+- Verify doctor credentials
+- Manage system configuration
+- Monitor system health
 
 ## Unique Selling Points
 
@@ -72,12 +99,12 @@ Patient PWA (Offline-First)
 
 ## Future Roadmap
 
-- [ ] Hospital EHR integration
-- [ ] Wearable device data sync
-- [ ] Medication reminders
-- [ ] Health analytics dashboard
-- [ ] Telemedicine integration
-- [ ] Insurance claim assistance
-- [ ] Multi-device sync
+-  Hospital EHR integration
+-  Wearable device data sync
+-  Medication reminders
+-  Health analytics dashboard
+-  Telemedicine integration
+-  Insurance claim assistance
+-  Multi-device sync
 
 **Built with ♡ for improving healthcare accessibility in India**
