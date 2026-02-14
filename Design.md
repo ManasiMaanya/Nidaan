@@ -2,7 +2,7 @@
 
 ## System Architecture
 
-### High-Level Overview
+### Overview
 
 ```
 ┌─────────────────────────────────────────────────────────┐
@@ -319,22 +319,6 @@ Medical Report (PDF/Image)
   (stored alongside original)
 ```
 
-## User Interface Design
-
-### Design Principles
-- **Simplicity First:** Large fonts (18px min), high contrast
-- **Touch-Friendly:** 48px minimum touch targets
-- **Icon-Driven:** Minimal text, visual navigation
-- **Accessibility:** Screen reader support, voice navigation
-
-### Color Scheme
-- Primary: #2563EB (Blue - Trust)
-- Success: #10B981 (Green - Verified)
-- Error: #EF4444 (Red - Critical)
-- Warning: #F59E0B (Orange - Caution)
-- Background: #F9FAFB
-- Text: #111827
-
 ### Key Screens
 
 **Patient App:**
@@ -351,62 +335,6 @@ Medical Report (PDF/Image)
 3. Consultation View - Full medical history
 4. Print Summary - Formatted PDF generation
 
-## API Design
-
-### Patient Endpoints
-```
-POST   /api/auth/register
-POST   /api/auth/login
-POST   /api/auth/refresh
-
-GET    /api/patient/records
-POST   /api/patient/records
-GET    /api/patient/records/:id
-PUT    /api/patient/records/:id
-DELETE /api/patient/records/:id
-
-POST   /api/sharing/generate-qr
-POST   /api/sharing/revoke
-GET    /api/sharing/active-sessions
-
-GET    /api/audit/logs
-```
-
-### Doctor Endpoints
-```
-POST   /api/doctor/auth/register
-POST   /api/doctor/auth/verify-license
-POST   /api/doctor/auth/login
-
-POST   /api/doctor/access/validate-qr
-GET    /api/doctor/access/patient/:id
-POST   /api/doctor/access/end-session
-
-POST   /api/doctor/records/add-diagnosis
-POST   /api/doctor/records/print-summary
-```
-
-## Offline-First Strategy
-
-### Service Worker Strategy
-```javascript
-// Cache-first for static assets
-self.addEventListener('fetch', (event) => {
-  if (isStaticAsset(event.request)) {
-    event.respondWith(cacheFirst(event.request));
-  }
-  
-  // Network-first for API calls (with fallback)
-  if (isAPICall(event.request)) {
-    event.respondWith(networkFirst(event.request));
-  }
-  
-  // Offline page for navigation
-  if (isNavigation(event.request)) {
-    event.respondWith(offlineFirst(event.request));
-  }
-});
-```
 
 ### IndexedDB Schema
 ```
