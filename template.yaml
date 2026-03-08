@@ -1,0 +1,68 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Nidaan Serverless Backend
+
+Globals:
+  Function:
+    Timeout: 30
+    MemorySize: 512
+    Runtime: python3.13
+    Environment:
+      Variables:
+        AWS_REGION_TRANSLATE: ap-south-1
+        AWS_REGION_BEDROCK: us-east-1
+
+Resources:
+  # API Gateway
+  NidaanApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: prod
+      Cors:
+        AllowMethods: "'GET,POST,OPTIONS'"
+        AllowHeaders: "'Content-Type,Authorization'"
+        AllowOrigin: "'*'"
+
+  # Lambda Function
+  NidaanFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: nidaan-api-function
+      CodeUri: ./
+      Handler: lambda_function.lambda_handler
+      Policies:
+        - AmazonBedrockFullAccess
+        - TranslateFullAccess
+      Events:
+        TranslateApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref NidaanApi
+            Path: /translate
+            Method: POST
+        SimplifyApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref NidaanApi
+            Path: /simplify
+            Method: POST
+        SimplifyAndTranslateApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref NidaanApi
+            Path: /simplify-and-translate
+            Method: POST
+        HealthApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref NidaanApi
+            Path: /health
+            Method: GET
+
+Outputs:
+  ApiUrl:
+    Description: "API Gateway endpoint URL"
+    Value: !Sub "https://${NidaanApi}.execute-api.${AWS::Region}.amazonaws.com/prod"
+  FunctionArn:
+    Description: "Lambda Function ARN"
+    Value: !GetAtt NidaanFunction.Arn
